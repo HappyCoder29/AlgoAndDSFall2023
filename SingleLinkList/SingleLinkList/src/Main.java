@@ -13,6 +13,11 @@ public class Main {
 
         System.out.println(list.isPalindrome());
 
+        enum colors {
+            red , green, blue
+        }
+
+        System.out.println(colors.blue);
 
 
         //init(list);
