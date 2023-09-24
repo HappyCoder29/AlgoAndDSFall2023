@@ -1,13 +1,28 @@
-public class LList <T>{
+import java.util.Comparator;
+import java.util.Stack;
+
+class LList <T extends Comparable<T>> implements Comparator<T>{
     public Node<T> head;
     public Node<T> tail;
+    public int length;
     public LList(){
         head = null;
         tail = null;
+        length = 0;
     }
     public void printList(){
         System.out.print("[");
         Node<T> temp = head;
+        while(temp != null){
+            System.out.print(temp.data + ",");
+            temp = temp.next;
+        }
+        System.out.println("]");
+    }
+
+    public void printList(Node<T> node){
+        System.out.print("[");
+        Node<T> temp = node;
         while(temp != null){
             System.out.print(temp.data + ",");
             temp = temp.next;
@@ -23,6 +38,21 @@ public class LList <T>{
         if(head.next == null){
             tail = head;
         }
+        length ++;
+    }
+
+    public void append(T data){
+        Node<T> addNode = new Node<>(data);
+        length ++;
+        if(head == null){
+            head = addNode;
+            return;
+        }
+        Node<T> temp = head;
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        temp.next = addNode;
     }
 
     public T get(int index){
@@ -61,11 +91,11 @@ public class LList <T>{
 
         int count = 0;
         Node<T> temp = head;
-        while(temp.next != null && count < n){
+        while(temp.next != null && count < n-1){
             temp = temp.next;
             count++;
         }
-        if(count != n){
+        if(count != n-1){
             try {
                 throw new Exception("Index is more than number of elements in list");
             } catch (Exception e) {
@@ -298,7 +328,7 @@ public class LList <T>{
                 break;
             }
 
-            front = front.next.next;
+            front = front.next;
             back = back.next;
         }
         Node<T> temp = back.next;
@@ -326,6 +356,7 @@ public class LList <T>{
         Node<T> lastNode = getLastNode(head);
         secondHalf = reverseList(secondHalf);
 
+
         Node<T> first = head;
         Node<T> second = secondHalf;
         boolean palindrome = true;
@@ -337,11 +368,109 @@ public class LList <T>{
             first = first.next;
             second = second.next;
         }
-
         secondHalf = reverseList(secondHalf);
         lastNode.next = secondHalf;
         return palindrome;
 
     }
 
+    public void zipMerge(){
+        if(head == null || head.next == null || head.next.next == null){
+            return;
+        }
+
+        Node<T> secondHalf = breakListInHalf();
+        secondHalf =  reverseList(secondHalf);
+
+        head = zipMerge(head, secondHalf, true);
+
+    }
+
+    public Node<T> mergeTwoSortedList(Node<T> node1, Node<T> node2){
+        Node<T> result = null;
+        if(node1 == null){
+            return node2;
+        }
+        if(node2 == null){
+            return node1;
+        }
+        if(node1.data.compareTo(node2.data) <= 0){
+            result = node1;
+            result.next = mergeTwoSortedList(node1.next, node2);
+        }else{
+            result = node2;
+            result.next = mergeTwoSortedList(node1, node2.next);
+        }
+        return result;
+    }
+
+    private Node<T> zipMerge(Node<T> node1, Node<T> node2, boolean bSwitch){
+        Node<T> result = null;
+        if(node1 == null){
+            return node2;
+        }
+        if(node2 == null){
+            return node1;
+        }
+        if(bSwitch){
+            result = node1;
+            result.next = zipMerge(node1.next, node2, false);
+        }else{
+            result = node2;
+            result.next = zipMerge(node1, node2.next, true);
+        }
+        return result;
+    }
+
+    @Override
+    public int compare(T o1, T o2) {
+        return o1.compareTo(o2);
+    }
+
+    public void reverseInGroupOfK(int k){
+        if(head == null || head.next == null){
+            return;
+        }
+        if(k >= length){
+            reverseList();
+        }
+        Node<T> back = head;
+        Node<T> front = head;
+        Stack<T> stack = new Stack<>();
+        while(front != null){
+            for(int i = 0 ; i < k; i ++){
+                stack.push(front.data);
+                front = front.next;
+                if(front == null){
+                    break;
+                }
+            }
+            while(!stack.isEmpty()){
+                back.data = stack.pop();
+                back = back.next;
+            }
+        }
+        while(!stack.isEmpty()){
+            back.data = stack.pop();
+            back = back.next;
+        }
+    }
+
+    public void rotateList(int k){
+        k = k%length;
+        reverseList();
+        Node<T> kThNode = getNthNode(k);
+        Node<T> secondHalf = kThNode.next;
+        kThNode.next = null;
+        Node<T> firstHalf = head;
+        firstHalf = reverseList(firstHalf);
+        secondHalf = reverseList(secondHalf);
+
+        Node<T> temp = firstHalf;
+        while(temp.next != null){
+            temp = temp.next;
+        }
+        temp.next = secondHalf;
+        head = firstHalf;
+    }
 }
