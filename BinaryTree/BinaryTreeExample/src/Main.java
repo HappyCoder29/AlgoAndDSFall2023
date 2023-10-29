@@ -3,24 +3,28 @@ import com.sun.source.tree.BinaryTree;
 public class Main {
     public static void main(String[] args) {
 
-        BinTree<Integer> tree = getTree();
-        tree.preOrder();
-        tree.inOrder();
-        tree.postOrder();
-        tree.levelOrder();
-        tree.levelOrderInOneLine();
-        System.out.println(tree.size());
-        System.out.println(tree.height());
-        tree.printLeftView();
-        tree.printRightView();
-        tree.printZigZag();
+//        BinTree<Integer> tree = getTree();
+//        tree.preOrder();
+//        tree.inOrder();
+//        tree.postOrder();
+//        tree.levelOrder();
+//        tree.levelOrderInOneLine();
+//        System.out.println(tree.size());
+//        System.out.println(tree.height());
+//        tree.printLeftView();
+//        tree.printRightView();
+//        tree.printZigZag();
+//
+//        tree.printBottomView();
+//        tree.printTopView();
+//        System.out.println("***********");
+//        tree.printBoundary();
+//        tree.printBoundaryReverse();
+//        tree.depthFirst();
 
-        tree.printBottomView();
-        tree.printTopView();
-        System.out.println("***********");
-        tree.printBoundary();
-        tree.printBoundaryReverse();
-        tree.depthFirst();
+        BinTree<Integer> tree = getTree();
+        tree.mirrorTree();
+        tree.levelOrder();
 
 
         System.out.println("Hello world!");

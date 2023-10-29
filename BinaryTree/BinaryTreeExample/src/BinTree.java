@@ -1,8 +1,5 @@
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class BinTree <T>{
     public Node<T> root;
@@ -351,6 +348,22 @@ public class BinTree <T>{
         }
         return  isSymmetric(node1.left, node2.left) &&
                 isSymmetric(node1.right, node2.right);
+
+    }
+
+    public void mirrorTree(){
+        mirrorTree(root);
+    }
+    public void mirrorTree(Node<T> node){
+        if(node != null){
+            mirrorTree(node.left);
+            mirrorTree(node.right);
+            Node<T>temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+
+        }
+
 
     }
 
